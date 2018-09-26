@@ -1,0 +1,11 @@
+# HW1
+*.bc
+*.prof.bc
+*.prof
+*.tgz
+default.profraw
+*.pgo.profdata
+*.opcstats
+*.tar.xz
+*.Z
+
