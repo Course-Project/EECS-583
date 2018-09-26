@@ -124,8 +124,8 @@ namespace {
             errs().write_escaped(F.getName()) << ": Memory Instructions are executed " << totalMemoryInstructions << " time.\n";
             errs().write_escaped(F.getName()) << ": Other Instructions are executed " << totalOtherInstructions << " time.\n";
 
+
             opcstats << F.getName().data() << ", "
-                // in case, totalInstructions of one function is zero
                 << (totalInstructions == 0 ? totalInstructions++ : totalInstructions) << ", "
                 << (totalIntegerALUInstructions / totalInstructions) << ", "
                 << (totalFloatingPointALUInstructions / totalInstructions) << ", "
