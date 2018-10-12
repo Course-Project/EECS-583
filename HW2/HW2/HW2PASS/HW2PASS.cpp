@@ -123,8 +123,6 @@ private:
 
   AliasSetTracker *collectAliasInfoForLoop(Loop *L, LoopInfo *LI,
                                            AliasAnalysis *AA);
-
-  std::vector<BasicBlock *> FrequentLoopPath;
 };
 
 struct FPLICMPass : public LoopPass {
@@ -207,6 +205,7 @@ bool LoopInvariantCodeMotion::runOnLoop(
 
   // ========= 1
   // Get the begining basic block
+  std::vector<BasicBlock *> FrequentLoopPath;
   BasicBlock *LoopHeader = L->getHeader();
 
   // Start from the loop header
@@ -242,11 +241,12 @@ bool LoopInvariantCodeMotion::runOnLoop(
   }
 
   // Process frequent path
+  errs() << "[h1994st] Process frequent path:\n";
   std::vector<Instruction *> HoistInstructions;
   for (BasicBlock *BB : FrequentLoopPath) {
-    // errs() << "[h1994st] Basic Block ";
-    // BB->printAsOperand(errs(), false);
-    // errs() << "\n";
+    errs() << "[h1994st] Basic Block ";
+    BB->printAsOperand(errs(), false);
+    errs() << "\n";
 
     for (Instruction &I : *BB) {
       if (auto *LI = dyn_cast<LoadInst>(&I)) {
@@ -271,9 +271,9 @@ bool LoopInvariantCodeMotion::runOnLoop(
         }
 
         if (canHoist) {
-          // errs() << "[h1994st] Can hoist: " << *LI << "\n";
-          // errs() << "[h1994st] Load " << *LI << "\n";
-          // errs() << LI->getOperand(0) << ":" << *(LI->getOperand(0)) << "\n";
+          errs() << "[h1994st] Can hoist: " << *LI << "\n";
+          errs() << "[h1994st] Load " << *LI << "\n";
+          errs() << LI->getOperand(0) << ":" << *(LI->getOperand(0)) << "\n";
 
           HoistInstructions.push_back(&I);
         }
@@ -287,7 +287,7 @@ bool LoopInvariantCodeMotion::runOnLoop(
   for (Instruction *I : HoistInstructions) {
     // Hoist a instruction
     errs() << "[h1994st] Hoist: " << *I << "\n";
-    
+
     auto *Src = cast<Instruction>(I->getOperand(0));
 
     // Create a temp variable
@@ -340,6 +340,7 @@ bool LoopInvariantCodeMotion::runOnLoop(
       }
     }
   }
+  errs() << "\n";
   // ========= 2
 
   AliasSetTracker *CurAST = collectAliasInfoForLoop(L, LI, AA);

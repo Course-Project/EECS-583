@@ -42,8 +42,6 @@ pack: run
 	@cp HW1/HW1PASS/HW1PASS.cpp $(SUB_SRC_DIR)
 	@cp 583wc.opcstats 583simple.opcstats 583compress.opcstats $(SUB_RESULT_DIR)
 	
-	@cp 583compress.opcstats ./submission_hw1/results/
-	
 	@echo "src:"
 	@ls -alh submission_hw1/src
 	@echo ""
